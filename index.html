@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Personal Profile</title>
+<style>
+body {
+    margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+  background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #0f0c29);
+  background-size: 400% 400%;
+  animation: gradientBG 20s ease infinite;
+  perspective: 1000px;
+  color: #00ffe0;
+}
+
+@keyframes gradientBG {
+  0% {background-position: 0% 50%;}
+  50% {background-position: 100% 50%;}
+  100% {background-position: 0% 50%;}
+}
+@keyframes flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    opacity: 1;
+    text-shadow: 0 0 5px #00ffe0, 0 0 10px #ff00ff, 0 0 20px #00ffe0;
+  }
+  20%, 22%, 24%, 55% { opacity: 0.3; text-shadow: none; }
+}
+
+h1,h2,h3,p { position: relative; z-index: 2; animation: flicker 2s infinite; }
+h1 { font-size: 3em; margin: 10px 0; }
+h2 { margin-top: 20px; font-size: 2em; }
+p,h3 { font-size: 1.2em; margin: 5px 0; }
+img {
+  width: 200px; height: 200px;
+  border-radius: 50%;
+  border: 3px solid #00ffe0;
+  box-shadow: 0 0 20px #00ffe0, 0 0 40px #ff00ff;
+  transition: transform 0.3s, box-shadow 0.3s;
+  z-index: 2; position: relative;
+  animation: pulse 2s infinite alternate;
+}
+img:hover { transform: scale(1.1) rotate(5deg); box-shadow: 0 0 50px #00ffe0,0 0 70px #ff00ff; }
+@keyframes pulse { 0%{box-shadow:0 0 20px #00ffe0,0 0 40px #ff00ff;} 100%{box-shadow:0 0 40px #00ffe0,0 0 80px #ff00ff;} }
+
+.button {
+  padding: 12px 25px;
+  margin: 10px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #00ffe0, #ff00ff);
+  color: #000;
+  font-size: 1em;
+  cursor: pointer;
+  box-shadow: 0 0 15px #00ffe0,0 0 25px #ff00ff;
+  transition: transform 0.3s, box-shadow 0.3s;
+  text-decoration: none;
+}
+.button:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 0 50px #00ffe0,0 0 70px #ff00ff;
+}
+.button:active { transform: scale(0.98); }
+
+
+.socials {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+  z-index: 2; position: relative;
+}
+.socials a {
+  margin: 0 10px;
+  color: #00ffe0;
+  font-size: 1.5em;
+  text-decoration: none;
+  text-shadow: 0 0 5px #00ffe0,0 0 10px #ff00ff;
+  transition: transform 0.3s, text-shadow 0.3s;
+}
+.socials a:hover {
+  transform: scale(1.3);
+  text-shadow: 0 0 20px #00ffe0,0 0 40px #ff00ff,0 0 60px #00ffe0;
+}
+
+.stars, .shapes { position: absolute; width: 100%; height: 100%; overflow: hidden; top:0; left:0; z-index:0; }
+.star { position: absolute; border-radius: 50%; background:#fff; box-shadow:0 0 5px #0ff,0 0 10px #f0f,0 0 15px #0ff; width:2px; height:2px; }
+.shape {
+  position: absolute; width: 30px; height: 30px;
+  border-radius: 50%; background: rgba(0,255,224,0.2);
+  box-shadow:0 0 15px #0ff,0 0 25px #ff00ff; animation: floatShape linear infinite;
+}
+@keyframes floatShape { 0%{transform:translateY(0);} 100%{transform:translateY(1000px);} }
+
+
+@media(max-width:500px){
+  h1{font-size:2em;} h2{font-size:1.5em;} img{width:150px;height:150px;}
+}
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+<div class="shapes" id="shapes"></div>
+
+<h1>Karuna.G.S</h1>
+<img src="karuna,jpg.jpg" alt="Profile Image">
+<h2>About Me</h2>
+<p>Hello! I am learning web design. This is my futuristic profile page.</p>
+<h3>Contact: 9148903672</h3>
+<p>Email: karuna51224@gmail.com</p>
+<br>
+<br>
+<div>
+  <a href="#" class="button">Portfolio</a>
+</div>
+
+<script>
+
+const starsContainer = document.getElementById('stars');
+const stars = [];
+for(let i=0;i<150;i++){
+  const star = document.createElement('div');
+  star.className='star';
+  star.style.width=star.style.height=Math.random()*3+1+'px';
+  star.style.left=Math.random()*window.innerWidth+'px';
+  star.style.top=Math.random()*window.innerHeight+'px';
+  star.dataset.speed=0.2+Math.random()*0.8;
+  starsContainer.appendChild(star); stars.push(star);
+}
+let mouseX=0, mouseY=0;
+document.addEventListener('mousemove',(e)=>{ mouseX=e.clientX/window.innerWidth-0.5; mouseY=e.clientY/window.innerHeight-0.5; });
+function animateStars(){
+  stars.forEach(star=>{
+    let speed=star.dataset.speed;
+    let x=parseFloat(star.style.left);
+    let y=parseFloat(star.style.top);
+    y+=speed; if(y>window.innerHeight)y=-5;
+    x+=mouseX*speed*5; if(x>window.innerWidth)x=0; if(x<0)x=window.innerWidth;
+    star.style.top=y+'px'; star.style.left=x+'px';
+  });
+  requestAnimationFrame(animateStars);
+}
+animateStars();
+
+
+const shapesContainer=document.getElementById('shapes');
+for(let i=0;i<15;i++){
+  const shape=document.createElement('div');
+  shape.className='shape';
+  shape.style.left=Math.random()*window.innerWidth+'px';
+  shape.style.top=Math.random()*-window.innerHeight+'px';
+  shape.style.width=shape.style.height=20+Math.random()*40+'px';
+  shape.style.animationDuration=10+Math.random()*10+'s';
+  shapesContainer.appendChild(shape);
+}
+</script>
+
+</body>
+</html>
